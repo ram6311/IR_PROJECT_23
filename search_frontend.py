@@ -447,44 +447,38 @@ def search_anchor(query, index, file_name):
 
     return doc_list_anchor
 
-
-
-
-
-def Search_BM25(queries):
+def Search_BM25_with_condicion(queries):
     size_corpus = 6348910   #size of the corpus
     sum_sc = 2028630613    # sum of the length of all documents in the corpus
     avg_doc_length_of_all_corpus = sum_sc / size_corpus
     tokens = tokenize(queries)
-    all_docs_distinct = []
+    relevant_docs = []
     term_docid_freq = {}
     k1 = 1.5 # k1 is a tuning parameter of BM25
     b = 0.75 # b is a tuning parameter of BM25
-    for term in tokens:
+    term_docid_freq = {}
+    all_docs_distinct = set()
 
+    for term in tokens:
         if term in body_index.term_total:
             list_docid_tf_foreach_term = read_posting_list(body_index, term,file_name_body)
-            lst_docid = []
-
             for doc_id, freq in list_docid_tf_foreach_term:
+                if freq <= 50: # the condition
+                  continue
                 term_docid_freq[(term, doc_id)] = freq
-                lst_docid.append(doc_id)
+                all_docs_distinct.add(doc_id)
 
-            all_docs_distinct += lst_docid
-
-    all_docs_distinct = set(all_docs_distinct)
 
     def BM25_score_docid_query(query, doc_id):
-
         idf = calc_idf(query)
         bm25 = 0
         for term in query:
             if (term, doc_id) in term_docid_freq:
                 freq = term_docid_freq[(term, doc_id)]
-                first = (k1 + 1) * freq
-                secondpart = query[term] * idf[term]
-                thirdpart = freq + k1 * (1 - b + b * (body_index.DL[doc_id] / avg_doc_length_of_all_corpus))
-                bm25 += secondpart * (first / thirdpart)
+                tf_weight = (k1 + 1) * freq
+                idf_weight = query[term] * idf[term]
+                doc_length_weight = freq + k1 * (1 - b + b * (body_index.DL[doc_id] / avg_doc_length_of_all_corpus))
+                bm25 += idf_weight * (tf_weight / doc_length_weight)
         return bm25
 
     def calc_idf(query):
@@ -492,20 +486,17 @@ def Search_BM25(queries):
         for term in query:
             if term in body_index.df.keys():
                 term_in_doc = body_index.df[term]
-                idf[term] = math.log(1 + (size_corpus - term_in_doc + 0.5) / (term_in_doc + 0.5))
+                idf[term] = math.log(1 + (size_corpus - term_in_doc + 0.5) / (term_in_doc + 0.5)) 
             else:
                 pass
         return idf
 
 
-    doc_id_bm25 = [(doc_id, BM25_score_docid_query(dict(Counter(tokens)), doc_id)) for doc_id in all_docs_distinct] # 1.5,0.75
-
+    doc_id_bm25 = [(doc_id, BM25_score_docid_query(dict(Counter(tokens)), doc_id)) for doc_id in all_docs_distinct] 
     doc_id_bm25=sorted(doc_id_bm25, key=lambda x: x[1], reverse=True)[:100] # take the top 100
-
     res = list({doc_id: title_id[doc_id] for doc_id, score in doc_id_bm25}.items()) # match doc_id to title
 
     return res
-
 if __name__ == '__main__':
     # run the Flask RESTful API, make the server publicly available (host='0.0.0.0') on port 8080
     app.run(host='0.0.0.0', port=8080, debug=True)
