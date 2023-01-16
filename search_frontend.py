@@ -126,15 +126,7 @@ def search():
     if len(query) == 0:
       return jsonify(res)
     # BEGIN SOLUTION
-    if len(tokenize(query)) in (1, 2):
-
-        # code to execute when the condition is true
-
-        file_name = file_name_title
-
-        res = search_title(query, title_index, file_name)[:100]
-    else:
-        res=Search_BM25(query)
+    res=Search_BM25_with_condicion(query)
     # END SOLUTION
     return jsonify(res)
 
