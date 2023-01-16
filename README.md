@@ -1,4 +1,4 @@
-# IR_PROJECT_23
+# **IR_PROJECT_23**
 
 In this undertaking, we crafted an information retrieval engine utilizing the entirety of Wikipedia files as a component
 of our culminating project in the "Information Retrieval" course. Our engine endeavors to locate the most pertinent Wikipedia documents
@@ -10,8 +10,6 @@ and other prevalent Python libraries such as pandas and numpy, among others.
     1. search_body(query, index, file_name) - search the body of the document
     2. search_anchor(query, index, file_name) - search the anchor of the document
     3. Search_BM25_with_condicion(queries) - search the body of the document with a condition
-    
-* BMֹ_25_from_index: class object that implement an index based on BM 25 score.
 
 * inverted_index_gcp\colab is a class that contains the inverted index and the posting lists
 
@@ -24,6 +22,7 @@ and other prevalent Python libraries such as pandas and numpy, among others.
     measuring their MAP@40 and average retrieval time. Following the training phase, we selected the optimal 
       version and applied it to the test set for further validation.
       
-# NOTE
+**NOTE**
+
 all this project is written in Python and implemented using PyCharm, JupyterNoteBook and GoogleColab.
-![image](https://user-images.githubusercontent.com/84604391/212757725-8391b77f-ff3a-45e6-b5c6-a987baf7e0a2.png)
+
