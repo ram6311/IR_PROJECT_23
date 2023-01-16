@@ -26,3 +26,4 @@ and other prevalent Python libraries such as pandas and numpy, among others.
       
 # NOTE
 all this project is written in Python and implemented using PyCharm, JupyterNoteBook and GoogleColab.
+![image](https://user-images.githubusercontent.com/84604391/212757725-8391b77f-ff3a-45e6-b5c6-a987baf7e0a2.png)
