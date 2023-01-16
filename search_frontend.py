@@ -444,7 +444,6 @@ def Search_BM25_with_condicion(queries):
     sum_sc = 2028630613    # sum of the length of all documents in the corpus
     avg_doc_length_of_all_corpus = sum_sc / size_corpus
     tokens = tokenize(queries)
-    relevant_docs = []
     term_docid_freq = {}
     k1 = 1.5 # k1 is a tuning parameter of BM25
     b = 0.75 # b is a tuning parameter of BM25
