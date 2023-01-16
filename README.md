@@ -9,7 +9,9 @@ and other prevalent Python libraries such as pandas and numpy, among others.
 * search_frontend.py contains the following functions:
     1. search_body(query, index, file_name) - search the body of the document
     2. search_anchor(query, index, file_name) - search the anchor of the document
-    3. Search_BM25_with_condicion(queries) - search the body of the document with a condition
+    3. search_title(query, index, file_name) - search the title of the document
+    4. Search_BM25_with_condicion(queries) - search the body of the document with a condition
+    5. pagerank & pageviews functions
 
 * inverted_index_gcp\colab is a class that contains the inverted index and the posting lists
 
